@@ -756,19 +756,11 @@ result = {}
 rel_acc = {}
 
 
-# for dataset in ['FB15K_0.0_t33', 'FB15K_0.05_t33', 'FB15K_0.1_t33', 'FB15K_0.15_t33', 'FB15K_0.2_t33']:
+for dataset in ['FB15K_0.0_t33']:
 #for dataset in ['NELL', 'NELL_0.05', 'NELL_0.1', 'NELL_0.15', 'NELL_0.2']:
 #for dataset in ['NELL']:
-for dataset in ['Wiki', 'Wiki_0.05','Wiki_0.1','Wiki_0.15', 'Wiki_0.2']:
-    if 'Wiki' in dataset:
-        num_class = 11
-        batch_max = 7500
-    elif 'FB' in dataset:
-        num_class = 33
-        batch_max = 500
-    else:
-        num_class = 22
-        batch_max = 2000
+#for dataset in ['Wiki', 'Wiki_0.05','Wiki_0.1','Wiki_0.15', 'Wiki_0.2']:
+    batch_max = 5000
     for few_shot in [5]:
         for i in range(1):
             save_rel = True
