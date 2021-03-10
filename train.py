@@ -81,13 +81,13 @@ class train_dataset(object):
                         torch.tensor(query_label))
 
     def getitem(self, idx):
-
+        #get a task for tranining
         if idx == 0: np.random.shuffle(self.relations)
 
         # rd = RandomState(idx)
         rd = np.random
 
-        relations = rd.choice(self.relations, size=self.C_way)
+        relations = rd.choice(self.relations, size=self.C_way,replace=False)
         support_set = []
         query_set = []
         query_label = []
@@ -167,6 +167,7 @@ class Trainer(object):
 
 
     def load_embed(self):
+        #load the pre-trained embeddings for relations and entities
         symbol_id = {}
         rel2id = json.load(open(self.dataset + '/relation2ids'))
         ent2id = json.load(open(self.dataset + '/ent2ids'))
@@ -207,6 +208,7 @@ class Trainer(object):
         self.symbol2vec = embeddings
 
     def build_connection(self, max_=100):  # 100
+        #build connections for neighbor information
 
         self.connections = (np.ones((self.num_ents, max_, 2)) * self.pad_id).astype(int)
         self.e1_rele2 = defaultdict(list)
@@ -258,6 +260,7 @@ class Trainer(object):
         self.matcher.load_state_dict(torch.load(self.save_path))
 
     def train(self):
+        #training process
         self.best_test_score = 0
         best_dev_score = 0
         losses = []
@@ -532,6 +535,7 @@ class Matcher(nn.Module):
             return embeddings, average_confi
 
     def meta_support_encode(self, meta_support_left, meta_support_right, task):
+        #aggregate information from neighbors
         support_left_degrees = torch.stack([one[1] for one in meta_support_left], dim=0)  # [C_way, K_shot]
         support_left_connetions = torch.stack([one[0] for one in meta_support_left],
                                               dim=0)  # [C_way, K_shot, num_neighbor, 2]
